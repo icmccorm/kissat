@@ -49,22 +49,38 @@ kissat_find_gates (kissat * solver, unsigned lit)
   if (EMPTY_WATCHES (WATCHES (not_lit)))
     return false;
   bool res = false;
-  if (kissat_find_equivalence_gate (solver, lit))
+  if (kissat_find_equivalence_gate (solver, lit)){
+    printf("%u EQV\n", IDX(lit));
     res = true;
-  else if (kissat_find_and_gate (solver, lit, 0))
+  }
+  else if (kissat_find_and_gate (solver, lit, 0)){
+    printf("%u AND\n",IDX(lit));
     res = true;
-  else if (kissat_find_and_gate (solver, not_lit, 1))
+  }    
+  else if (kissat_find_and_gate (solver, not_lit, 1)){
+    printf("-%u AND\n",IDX(lit));
     res = true;
-  else if (kissat_find_if_then_else_gate (solver, lit, 0))
+  }  
+  else if (kissat_find_if_then_else_gate (solver, lit, 0)){
+    printf("%u ITE\n",IDX(lit));
     res = true;
-  else if (kissat_find_if_then_else_gate (solver, not_lit, 1))
+  }  
+  else if (kissat_find_if_then_else_gate (solver, not_lit, 1)){
+    printf("-%u ITE\n",IDX(lit));
     res = true;
-  else if (kissat_find_xor_gate (solver, lit, 0))
+  }  
+  else if (kissat_find_xor_gate (solver, lit, 0)){
     res = true;
-  else if (kissat_find_xor_gate (solver, not_lit, 1))
+    printf("%u XOR\n",IDX(lit));
+  }  
+  else if (kissat_find_xor_gate (solver, not_lit, 1)){
+    printf("-%u XOR\n",IDX(lit));
     res = true;
-  else if (kissat_find_definition (solver, lit))
+  }  
+  else if (kissat_find_definition (solver, lit)){
+    printf("%u DEF\n",IDX(lit));
     res = true;
+  }  
   if (res)
     INC (gates_extracted);
   return res;

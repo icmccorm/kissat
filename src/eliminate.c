@@ -428,7 +428,7 @@ set_next_elimination_bound (kissat * solver, bool complete)
 			"completed elimination bound %u next %u",
 			current_bound, next_bound);
 	  solver->bounds.eliminate.additional_clauses = next_bound;
-	  try_to_eliminate_all_variables_again (solver);
+//	  try_to_eliminate_all_variables_again (solver);
 	  REPORT (0, '^');
 	}
     }
@@ -459,25 +459,27 @@ static bool
 eliminate_variable (kissat * solver, unsigned idx)
 {
   assert (!solver->inconsistent);
-  if (!can_eliminate_variable (solver, idx))
-    return false;
+//  if (!can_eliminate_variable (solver, idx))
+//    return false;
   unsigned lit;
-  if (!kissat_generate_resolvents (solver, idx, &lit))
-    return false;
-  connect_resolvents (solver);
-  if (!solver->inconsistent)
-    weaken_clauses (solver, lit);
-  INC (eliminated);
-  kissat_mark_eliminated_variable (solver, idx);
-  if (solver->gate_eliminated)
-    {
-      INC (gates_eliminated);
-#ifdef METRICS
-      assert (*solver->gate_eliminated < UINT64_MAX);
-      *solver->gate_eliminated += 1;
-#endif
-    }
-  return true;
+  kissat_generate_resolvents (solver, idx, &lit);
+  return false;
+//  if (!kissat_generate_resolvents (solver, idx, &lit))
+//    return false;
+//  connect_resolvents (solver);
+//  if (!solver->inconsistent)
+//    weaken_clauses (solver, lit);
+//  INC (eliminated);
+//  kissat_mark_eliminated_variable (solver, idx);
+//  if (solver->gate_eliminated)
+//    {
+//      INC (gates_eliminated);
+//#ifdef METRICS
+//      assert (*solver->gate_eliminated < UINT64_MAX);
+//      *solver->gate_eliminated += 1;
+//#endif
+//    }
+//  return true;
 }
 
 static void
@@ -510,32 +512,32 @@ eliminate_variables (kissat * solver)
       LOG ("starting new elimination round %d", round);
 
       kissat_release_heap (solver, &solver->schedule);
-      if (forward)
-	{
-	  unsigned *propagate = solver->propagate;
-	  forward_subsumption_complete =
-	    kissat_forward_subsume_during_elimination (solver);
-	  if (solver->inconsistent)
-	    break;
-	  kissat_flush_large_connected (solver);
-	  kissat_connect_irredundant_large_clauses (solver);
-	  solver->propagate = propagate;
-	  kissat_flush_units_while_connected (solver);
-	  if (solver->inconsistent)
-	    break;
-	}
-      else
+//      if (0) //if (forward)
+//	{
+//	  unsigned *propagate = solver->propagate;
+//	  forward_subsumption_complete =
+//	    kissat_forward_subsume_during_elimination (solver);
+//	  if (solver->inconsistent)
+//	    break;
+//	  kissat_flush_large_connected (solver);
+//	  kissat_connect_irredundant_large_clauses (solver);
+//	  solver->propagate = propagate;
+//	  kissat_flush_units_while_connected (solver);
+//	  if (solver->inconsistent)
+//	    break;
+//	}
+//      else
 	kissat_connect_irredundant_large_clauses (solver);
 
-      const unsigned last_round_scheduled = schedule_variables (solver);
-      kissat_very_verbose (solver,
-			   "scheduled %u variables %.0f%% to eliminate "
-			   "in round %d", last_round_scheduled,
-			   kissat_percent (last_round_scheduled,
-					   solver->active), round);
+//      const unsigned last_round_scheduled = schedule_variables (solver);
+//      kissat_very_verbose (solver,
+//			   "scheduled %u variables %.0f%% to eliminate "
+//			   "in round %d", last_round_scheduled,
+//			   kissat_percent (last_round_scheduled,
+//					   solver->active), round);
 
-      if (forward_subsumption_complete && !last_round_scheduled)
-	break;
+//      if (forward_subsumption_complete && !last_round_scheduled)
+//	break;
 
       const bool eliminateheap = GET_OPTION (eliminateheap);
       unsigned idx = 0;
@@ -549,18 +551,18 @@ eliminate_variables (kissat * solver)
 	    done = true;
 	  else if (TERMINATED (eliminate_terminated_1))
 	    done = true;
-	  else if (solver->statistics.eliminate_resolutions >
-		   resolution_limit)
-	    {
-	      kissat_extremely_verbose (solver,
-					"eliminate round %u hits "
-					"resolution limit %"
-					PRIu64 " at %" PRIu64 " resolutions",
-					round, resolution_limit,
-					solver->statistics.
-					eliminate_resolutions);
-	      done = true;
-	    }
+//	  else if (solver->statistics.eliminate_resolutions >
+//		   resolution_limit)
+//	    {
+//	      kissat_extremely_verbose (solver,
+//					"eliminate round %u hits "
+//					"resolution limit %"
+//					PRIu64 " at %" PRIu64 " resolutions",
+//					round, resolution_limit,
+//					solver->statistics.
+//					eliminate_resolutions);
+//	      done = true;
+//	    }
 	  else
 	    {
 	      tried++;
@@ -568,22 +570,23 @@ eliminate_variables (kissat * solver)
 		idx = kissat_pop_max_heap (solver, &solver->schedule);
 	      if (eliminate_variable (solver, idx))
 		eliminated++, last_round_eliminated++;
-	      if (!solver->inconsistent)
-		kissat_flush_units_while_connected (solver);
+//	      if (!solver->inconsistent)
+//		kissat_flush_units_while_connected (solver);
 	      if (!eliminateheap)
 		idx++;
 	    }
 	}
+      return;
       if (!solver->inconsistent)
 	{
 	  kissat_flush_large_connected (solver);
 	  kissat_dense_collect (solver);
 	}
-      kissat_phase (solver, "eliminate", GET (eliminations),
-		    "eliminated %u variables %.0f%% in round %u",
-		    last_round_eliminated,
-		    kissat_percent (last_round_eliminated,
-				    last_round_scheduled), round);
+//      kissat_phase (solver, "eliminate", GET (eliminations),
+//		    "eliminated %u variables %.0f%% in round %u",
+//		    last_round_eliminated,
+//		    kissat_percent (last_round_eliminated,
+//				    last_round_scheduled), round);
 #ifndef QUIET
       {
 	const bool round_successful =
@@ -698,8 +701,8 @@ reset_map_and_kitten (kissat * solver)
 static void
 eliminate (kissat * solver)
 {
-  RETURN_IF_DELAYED (eliminate);
-  kissat_backtrack_propagate_and_flush_trail (solver);
+  //RETURN_IF_DELAYED (eliminate);
+//  kissat_backtrack_propagate_and_flush_trail (solver);
   assert (!solver->inconsistent);
   STOP_SEARCH_AND_START_SIMPLIFIER (eliminate);
   kissat_phase (solver, "eliminate", GET (eliminations),
@@ -733,3 +736,4 @@ kissat_eliminate (kissat * solver)
   solver->last.eliminate = solver->statistics.search_ticks;
   return solver->inconsistent ? 20 : 0;
 }
+

@@ -32,9 +32,10 @@ occurrences_literal (kissat * solver, unsigned lit, bool * update)
   while (p != end)
     {
       const watch head = *q++ = *p++;
+      
       if (head.type.binary)
 	{
-	  const unsigned other = head.binary.lit;
+/*	  const unsigned other = head.binary.lit;
 	  const value value = values[other];
 	  assert (value >= 0);
 	  if (value > 0)
@@ -44,7 +45,8 @@ occurrences_literal (kissat * solver, unsigned lit, bool * update)
 	    }
 	  else
 	    res++;
-	}
+*/	}
+	
       else
 	{
 	  const reference ref = head.large.ref;
@@ -131,7 +133,7 @@ generate_resolvents (kissat * solver, unsigned lit,
 	}
 
       bool first_antecedent_satisfied = false;
-
+/*
       for (all_literals_in_clause (other, c))
 	{
 	  if (other == lit)
@@ -147,7 +149,7 @@ generate_resolvents (kissat * solver, unsigned lit,
 	      break;
 	    }
 	}
-
+*/
       if (first_antecedent_satisfied)
 	continue;
 
@@ -188,6 +190,7 @@ generate_resolvents (kissat * solver, unsigned lit,
 		  LOG2 ("dropping falsified literal %s", LOGLIT (other));
 		  continue;
 		}
+/*		
 	      if (value > 0)
 		{
 		  if (d != &tmp1)
@@ -195,6 +198,7 @@ generate_resolvents (kissat * solver, unsigned lit,
 		  resolvent_satisfied_or_tautological = true;
 		  break;
 		}
+*/		
 	      if (marks[other])
 		{
 		  LOG2 ("dropping repeated %s literal", LOGLIT (other));
@@ -316,15 +320,15 @@ kissat_generate_resolvents (kissat * solver, unsigned idx, unsigned *lit_ptr)
 	SWAP (size_t, pos_count, neg_count);
       }
 
-    const unsigned occlim = solver->bounds.eliminate.occurrences;
-    if (pos_count && neg_count > occlim)
-      {
-	LOG ("no elimination of variable %u "
-	     "since its literal %s has %u > %u occurrences",
-	     idx, LOGLIT (not_lit), neg_count, occlim);
-	return false;
-      }
-
+//    const unsigned occlim = solver->bounds.eliminate.occurrences;
+//    if (pos_count && neg_count > occlim)
+//      {
+//	LOG ("no elimination of variable %u "
+//	     "since its literal %s has %u > %u occurrences",
+//	     idx, LOGLIT (not_lit), neg_count, occlim);
+//	return false;
+//      }
+/*
     limit = pos_count + (uint64_t) neg_count;
     if (pos_count)
       {
@@ -339,13 +343,14 @@ kissat_generate_resolvents (kissat * solver, unsigned idx, unsigned *lit_ptr)
 	     LOGLIT (lit), idx);
 	pure = true;
       }
+*/      
   }
 
   *lit_ptr = lit;
 
   INC (eliminate_attempted);
-  if (pure)
-    return true;
+//  if (pure)
+//    return true;
 
   const bool gates = !pure && kissat_find_gates (solver, lit);
 
@@ -367,6 +372,7 @@ kissat_generate_resolvents (kissat * solver, unsigned idx, unsigned *lit_ptr)
   statches *const antecedents0 = &solver->antecedents[0];
   statches *const antecedents1 = &solver->antecedents[1];
 
+/*
   if (gates)
     {
       LOG ("resolving gates[0] against antecedents[1] clauses");
@@ -397,7 +403,7 @@ kissat_generate_resolvents (kissat * solver, unsigned idx, unsigned *lit_ptr)
 				antecedents0, antecedents1, &resolved, limit))
 	failed = true;
     }
-
+*/
   CLEAR_STACK (*antecedents0);
   CLEAR_STACK (*antecedents1);
 

@@ -162,6 +162,11 @@ kissat_search (kissat * solver)
 {
   start_search (solver);
   int res = kissat_walk_initially (solver);
+
+  // before anything happens, just eliminate and exit
+  res = kissat_eliminate (solver);
+  exit(0);
+
   while (!res)
     {
       clause *conflict = kissat_search_propagate (solver);
@@ -183,8 +188,9 @@ kissat_search (kissat * solver)
 	kissat_restart (solver);
       else if (kissat_rephasing (solver))
 	kissat_rephase (solver);
-      else if (kissat_eliminating (solver))
+      else if (kissat_eliminating (solver)) {
 	res = kissat_eliminate (solver);
+      }
       else if (kissat_probing (solver))
 	res = kissat_probe (solver);
       else if (decision_limit_hit (solver))
