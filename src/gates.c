@@ -54,11 +54,11 @@ kissat_find_gates (kissat * solver, unsigned int lit)
     res = true;
   }
   else if (kissat_find_and_gate (solver, lit, 0)){
-    printf("%u AND\n", lit);
+    printf("%u AND\n", kissat_export_literal(solver, lit));
     res = true;
   }    
   else if (kissat_find_and_gate (solver, not_lit, 1)){
-    printf("%u AND\n", lit);
+    printf("%u AND\n", kissat_export_literal(solver, lit));
     res = true;
   }  
   else if (kissat_find_if_then_else_gate (solver, lit, 0)){

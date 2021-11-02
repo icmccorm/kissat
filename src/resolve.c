@@ -35,17 +35,17 @@ occurrences_literal (kissat * solver, unsigned lit, bool * update)
       
       if (head.type.binary)
 	{
-/*	  const unsigned other = head.binary.lit;
+	  const unsigned other = head.binary.lit;
 	  const value value = values[other];
 	  assert (value >= 0);
 	  if (value > 0)
 	    {
-	      kissat_eliminate_binary (solver, lit, other);
+	      //kissat_eliminate_binary (solver, lit, other);
 	      q--;
 	    }
 	  else
 	    res++;
-*/	}
+	}
 	
       else
 	{
