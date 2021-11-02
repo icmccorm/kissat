@@ -687,32 +687,32 @@ parse_input (application * application)
     kissat_read_already_open_file (&file, stdin, "<stdin>");
   else if (!kissat_open_to_read_file (&file, path))
     ERROR ("failed to open '%s' for reading", path);
-  kissat_section (solver, "parsing");
-  kissat_message (solver, "opened and reading %sDIMACS file:",
-		  file.compressed ? "compressed " : "");
-  kissat_line (solver);
-  kissat_message (solver, "  %s", file.path);
-  kissat_line (solver);
+  //kissat_section (solver, "parsing");
+  //kissat_message (solver, "opened and reading %sDIMACS file:",
+	//	  file.compressed ? "compressed " : "");
+  //kissat_line (solver);
+  //kissat_message (solver, "  %s", file.path);
+  //kissat_line (solver);
   const char *error = kissat_parse_dimacs (solver, application->strict, &file,
 					   &lineno, &application->max_var);
   kissat_close_file (&file);
   if (error)
     ERROR ("%s:%" PRIu64 ": parse error: %s", file.path, lineno, error);
 #ifndef QUIET
-  kissat_message (solver, "closing input after reading %s",
-		  FORMAT_BYTES (file.bytes));
+  //kissat_message (solver, "closing input after reading %s",
+	//	  FORMAT_BYTES (file.bytes));
   if (file.compressed)
     {
       assert (path);
       size_t bytes = kissat_file_size (path);
-      kissat_message (solver,
-		      "inflated input file of size %s by %.2f",
-		      FORMAT_BYTES (bytes),
-		      kissat_average (file.bytes, bytes));
+      //kissat_message (solver,
+		  //    "inflated input file of size %s by %.2f",
+		  //    FORMAT_BYTES (bytes),
+		  //    kissat_average (file.bytes, bytes));
     }
-  kissat_message (solver,
-		  "finished parsing after %.2f seconds",
-		  kissat_process_time () - entered);
+  //kissat_message (solver,
+	//	  "finished parsing after %.2f seconds",
+	//	  kissat_process_time () - entered);
 #endif
   return true;
 }
@@ -855,10 +855,10 @@ run_application (kissat * solver,
   if (!ok)
     return 1;
 #ifndef QUIET
-  kissat_section (solver, "banner");
+  //kissat_section (solver, "banner");
   if (!GET_OPTION (quiet))
     {
-      kissat_banner ("c ", "KISSAT SAT Solver");
+      //kissat_banner ("c ", "KISSAT SAT Solver");
       fflush (stdout);
     }
 #endif
@@ -878,7 +878,7 @@ run_application (kissat * solver,
   print_options (solver);
 #endif
   print_limits (&application);
-  kissat_section (solver, "solving");
+  //kissat_section (solver, "solving");
 #endif
   int res = kissat_solve (solver);
   if (res)

@@ -61,7 +61,7 @@ kissat_current_resident_set_size (void)
 void
 kissat_print_resources (kissat * solver)
 {
-  uint64_t rss = kissat_maximum_resident_set_size ();
+/*  uint64_t rss = kissat_maximum_resident_set_size ();
   double t = kissat_time (solver);
   printf ("c "
 	  "%-" SFW1 "s "
@@ -83,7 +83,7 @@ kissat_print_resources (kissat * solver)
 	  "max-allocated:",
 	  max_allocated, "bytes", kissat_percent (max_allocated, rss));
 #endif
-  printf ("c process-time: %30s %18.2f seconds\n", FORMAT_TIME (t), t);
+  printf ("c process-time: %30s %18.2f seconds\n", FORMAT_TIME (t), t);*/
   fflush (stdout);
 }
 

@@ -10,3 +10,6 @@ tissat
 *.gcov
 gmon.out
 *~
+.vscode
+*.cnf
+debug

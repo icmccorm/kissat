@@ -270,8 +270,8 @@ parse_dimacs (kissat * solver, strictness strict,
     return "unexpected end-of-file after parsing number of clauses";
   if (ch != '\n')
     return "expected new-line after parsing number of clauses";
-  kissat_message (solver,
-		  "parsed 'p cnf %d %" PRIu64 "' header", variables, clauses);
+  //kissat_message (solver,
+//		  "parsed 'p cnf %d %" PRIu64 "' header", variables, clauses);
   *max_var_ptr = variables;
   kissat_reserve (solver, variables);
   uint64_t parsed = 0;

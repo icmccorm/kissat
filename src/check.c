@@ -1022,7 +1022,7 @@ kissat_checker_contains_clause (kissat * solver, clause * clause)
 }
 
 void
-kissat_remove_checker_external (kissat * solver,
+kissat_remove_checker_ (kissat * solver,
 				size_t size, const int *elits)
 {
   LOGINTS3 (size, elits, "removing external checker");
