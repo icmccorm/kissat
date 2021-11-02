@@ -38,7 +38,7 @@ kissat_unmark_binaries (kissat * solver, unsigned lit)
 }
 
 bool
-kissat_find_gates (kissat * solver, unsigned lit)
+kissat_find_gates (kissat * solver, unsigned int lit)
 {
   solver->gate_eliminated = 0;
   solver->resolve_gate = false;
@@ -50,35 +50,35 @@ kissat_find_gates (kissat * solver, unsigned lit)
     return false;
   bool res = false;
   if (kissat_find_equivalence_gate (solver, lit)){
-    printf("%u EQV\n", IDX(lit));
+    printf("%u EQV\n", kissat_export_literal(solver, lit));
     res = true;
   }
   else if (kissat_find_and_gate (solver, lit, 0)){
-    printf("%u AND\n",IDX(lit));
+    printf("%u AND\n", lit);
     res = true;
   }    
   else if (kissat_find_and_gate (solver, not_lit, 1)){
-    printf("-%u AND\n",IDX(lit));
+    printf("%u AND\n", lit);
     res = true;
   }  
   else if (kissat_find_if_then_else_gate (solver, lit, 0)){
-    printf("%u ITE\n",IDX(lit));
+    printf("%u ITE\n", kissat_export_literal(solver, lit));
     res = true;
   }  
   else if (kissat_find_if_then_else_gate (solver, not_lit, 1)){
-    printf("-%u ITE\n",IDX(lit));
+    printf("%u ITE\n", kissat_export_literal(solver, lit));
     res = true;
   }  
   else if (kissat_find_xor_gate (solver, lit, 0)){
     res = true;
-    printf("%u XOR\n",IDX(lit));
+    printf("%u XOR\n", kissat_export_literal(solver, lit));
   }  
   else if (kissat_find_xor_gate (solver, not_lit, 1)){
-    printf("-%u XOR\n",IDX(lit));
+    printf("%u XOR\n", kissat_export_literal(solver, lit));
     res = true;
   }  
   else if (kissat_find_definition (solver, lit)){
-    printf("%u DEF\n",IDX(lit));
+    printf("%u DEF\n", kissat_export_literal(solver, lit));
     res = true;
   }  
   if (res)
