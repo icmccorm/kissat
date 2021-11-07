@@ -328,7 +328,7 @@ kissat_generate_resolvents (kissat * solver, unsigned idx, unsigned *lit_ptr)
 //	     idx, LOGLIT (not_lit), neg_count, occlim);
 //	return false;
 //      }
-/*
+
     limit = pos_count + (uint64_t) neg_count;
     if (pos_count)
       {
@@ -343,7 +343,7 @@ kissat_generate_resolvents (kissat * solver, unsigned idx, unsigned *lit_ptr)
 	     LOGLIT (lit), idx);
 	pure = true;
       }
-*/      
+
   }
 
   *lit_ptr = lit;
